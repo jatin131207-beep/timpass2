@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
+}
+
+body{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
+  background-size:400% 400%;
+  animation:bgMove 12s ease infinite;
+  padding:20px;
+  overflow:hidden;
+}
+
+@keyframes bgMove{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Glass Card */
+.card{
+  width:100%;
+  max-width:400px;
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(18px);
+  border-radius:25px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.25);
+  animation:fadeIn 0.8s ease;
+  max-height:90vh;
+  overflow-y:auto;
+  z-index:1;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:scale(0.9)}
+  to{opacity:1; transform:scale(1)}
+}
+
+.card::-webkit-scrollbar{
+  width:5px;
+}
+.card::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.6);
+  border-radius:10px;
+}
+
+.gif{
+  width:70%;
+  border-radius:15px;
+  margin-bottom:15px;
+}
+
+h1{
+  color:#fff;
+  font-size:1.6rem;
+  margin-bottom:10px;
+}
+
+p{
+  color:#fff;
+  font-size:1rem;
+  margin-bottom:20px;
+}
+
+/* Buttons */
+.btns{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+}
+
+button{
+  border:none;
+  padding:12px 30px;
+  border-radius:30px;
+  font-size:1rem;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.yes{
+  background:#ff4d6d;
+  color:#fff;
+  font-weight:600;
+}
+
+.yes:hover{
+  transform:scale(1.1);
+}
+
+.no{
+  background:#fff;
+  color:#333;
+}
+
+/* Photos */
+.photos{
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+  margin-top:15px;
+}
+
+.photo-container{
+  background:#fff;
+  padding:10px 10px 18px;
+  border-radius:15px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.2);
+  animation:photoIn 0.8s ease forwards;
+  transform:rotate(var(--rot));
+}
+
+@keyframes photoIn{
+  from{opacity:0; transform:scale(0.8)}
+  to{opacity:1; transform:scale(1)}
+}
+
+.photo-container img{
+  width:100%;
+  height:auto;
+  border-radius:10px;
+  object-fit:contain;
+  transition:0.3s;
+}
+
+.photo-container:hover img{
+  transform:scale(1.05);
+}
+
+/* Floating hearts canvas */
+canvas{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Floating hearts -->
+<canvas id="hearts"></canvas>
+
+<!-- ❤️ BACKGROUND MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="romantic.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="card">
+  <img class="gif" id="gif" src="https://media.tenor.com/2roX3uxz_68AAAAC/peach-goma-love.gif">
+  <h1 id="title">Do you love me? 🤗</h1>
+  <p id="text">Please be honest ❤️</p>
+  <div class="btns">
+    <button class="yes" id="yes">Yes</button>
+    <button class="no" id="no">No</button>
+  </div>
+</div>
+
+<script>
+/* 🎵 MUSIC PLAY ON FIRST CLICK */
+const music = document.getElementById("bgMusic");
+document.body.addEventListener("click", () => {
+  music.play();
+}, { once:true });
+
+/* Question Flow */
+const steps=[
+ {t:"Do you love me? 🤗",p:"Please be honest ❤️",g:"https://media.tenor.com/2roX3uxz_68AAAAC/peach-goma-love.gif"},
+ {t:"Think again 🙄",p:"Itni jaldi na matt bolo 😥",g:"https://media.tenor.com/3a0cQqKzvXUAAAAC/mochi-beg.gif"},
+ {t:"Ek aur baar 😣",p:"Pls maan jao na 😭",g:"https://media.tenor.com/F0s3q0kQvSoAAAAC/cute-cry.gif"},
+ {t:"Aree baba 😅",p:"Ek chhoti si chance aur 😇",g:"https://media.tenor.com/L2LHBjefpJIAAAAC/cute-plead.gif"}
+];
+
+let i=0, scale=1;
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+
+no.onclick=()=>{
+ if(i<steps.length-1){
+  i++;
+  title.innerText=steps[i].t;
+  text.innerText=steps[i].p;
+  gif.src=steps[i].g;
+  scale+=0.2;
+  yes.style.transform=`scale(${scale})`;
+ }
+ no.style.transform=`translate(${Math.random()*40-20}px,${Math.random()*30-15}px)`;
+};
+
+yes.onclick=()=>{
+ confetti({particleCount:160,spread:80,origin:{y:0.6}});
+ showFinal();
+};
+
+function showFinal(){
+ card.innerHTML=`
+ <h1>I knew it! 😘</h1>
+ <p>You mean everything to me ❤️</p>
+
+ <div class="photos">
+  <div class="photo-container" style="--rot:-2deg"><img src="1.jpeg"></div>
+  <div class="photo-container" style="--rot:2deg"><img src="2.jpeg"></div>
+  <div class="photo-container" style="--rot:-1deg"><img src="3.jpeg"></div>
+  <div class="photo-container" style="--rot:1deg"><img src="4.jpeg"></div>
+ </div>
+
+ <p style="margin-top:15px;font-size:0.8rem;opacity:0.8">Scroll down ❤️</p>
+ `;
+ setInterval(()=>confetti({particleCount:3,spread:40,origin:{y:0.8}}),600);
+}
+
+/* Floating Hearts Animation */
+const canvas=document.getElementById("hearts");
+const ctx=canvas.getContext("2d");
+
+function resize(){
+ canvas.width=innerWidth;
+ canvas.height=innerHeight;
+}
+resize();
+onresize=resize;
+
+let hearts=[];
+for(let i=0;i<25;i++){
+ hearts.push({
+  x:Math.random()*canvas.width,
+  y:Math.random()*canvas.height,
+  r:Math.random()*6+4,
+  s:Math.random()*0.8+0.3
+ });
+}
+
+function animate(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ hearts.forEach(h=>{
+  ctx.fillStyle="rgba(255,255,255,0.5)";
+  ctx.beginPath();
+  ctx.arc(h.x,h.y,h.r,0,Math.PI*2);
+  ctx.fill();
+  h.y-=h.s;
+  if(h.y<-10) h.y=canvas.height+10;
+ });
+ requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+</body>
+</html>
