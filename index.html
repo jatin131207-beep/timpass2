@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You ❤️</title>
+<title>Happy Valentine's Day ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
@@ -21,7 +21,7 @@ body{
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(-45deg,#ff9a9e,#fad0c4,#fbc2eb,#a6c1ee);
+  background:linear-gradient(-45deg,#ff758c,#ff7eb3,#fad0c4,#fbc2eb);
   background-size:400% 400%;
   animation:bgMove 12s ease infinite;
   padding:20px;
@@ -34,7 +34,7 @@ body{
   100%{background-position:0% 50%}
 }
 
-/* Glass Card */
+/* Card */
 .card{
   width:100%;
   max-width:400px;
@@ -55,14 +55,6 @@ body{
   to{opacity:1; transform:scale(1)}
 }
 
-.card::-webkit-scrollbar{
-  width:5px;
-}
-.card::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,0.6);
-  border-radius:10px;
-}
-
 .gif{
   width:70%;
   border-radius:15px;
@@ -81,7 +73,6 @@ p{
   margin-bottom:20px;
 }
 
-/* Buttons */
 .btns{
   display:flex;
   justify-content:center;
@@ -112,7 +103,6 @@ button{
   color:#333;
 }
 
-/* Photos */
 .photos{
   display:flex;
   flex-direction:column;
@@ -125,28 +115,14 @@ button{
   padding:10px 10px 18px;
   border-radius:15px;
   box-shadow:0 10px 25px rgba(0,0,0,0.2);
-  animation:photoIn 0.8s ease forwards;
   transform:rotate(var(--rot));
-}
-
-@keyframes photoIn{
-  from{opacity:0; transform:scale(0.8)}
-  to{opacity:1; transform:scale(1)}
 }
 
 .photo-container img{
   width:100%;
-  height:auto;
   border-radius:10px;
-  object-fit:contain;
-  transition:0.3s;
 }
 
-.photo-container:hover img{
-  transform:scale(1.05);
-}
-
-/* Floating hearts canvas */
 canvas{
   position:absolute;
   inset:0;
@@ -158,18 +134,16 @@ canvas{
 
 <body>
 
-<!-- Floating hearts -->
 <canvas id="hearts"></canvas>
 
-<!-- ❤️ BACKGROUND MUSIC -->
 <audio id="bgMusic" loop>
   <source src="romantic.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card" id="card">
   <img class="gif" id="gif" src="https://media.tenor.com/2roX3uxz_68AAAAC/peach-goma-love.gif">
-  <h1 id="title">Do you love me? 🤗</h1>
-  <p id="text">Please be honest ❤️</p>
+  <h1 id="title">Will You Be My Valentine? 💘</h1>
+  <p id="text">Sach sach batao ❤️</p>
   <div class="btns">
     <button class="yes" id="yes">Yes</button>
     <button class="no" id="no">No</button>
@@ -177,23 +151,24 @@ canvas{
 </div>
 
 <script>
-/* 🎵 MUSIC PLAY ON FIRST CLICK */
 const music = document.getElementById("bgMusic");
 document.body.addEventListener("click", () => {
   music.play();
 }, { once:true });
 
-/* Question Flow */
 const steps=[
- {t:"Do you love me? 🤗",p:"Please be honest ❤️",g:"https://media.tenor.com/2roX3uxz_68AAAAC/peach-goma-love.gif"},
- {t:"Think again 🙄",p:"Itni jaldi na matt bolo 😥",g:"https://media.tenor.com/3a0cQqKzvXUAAAAC/mochi-beg.gif"},
- {t:"Ek aur baar 😣",p:"Pls maan jao na 😭",g:"https://media.tenor.com/F0s3q0kQvSoAAAAC/cute-cry.gif"},
- {t:"Aree baba 😅",p:"Ek chhoti si chance aur 😇",g:"https://media.tenor.com/L2LHBjefpJIAAAAC/cute-plead.gif"}
+ {t:"Valentine's Special 💘",p:"Ek honest jawab chahiye ❤️",g:"https://media.tenor.com/2roX3uxz_68AAAAC/peach-goma-love.gif"},
+ {t:"Soch lo 😌",p:"Aaj Valentine hai 🌹",g:"https://media.tenor.com/3a0cQqKzvXUAAAAC/mochi-beg.gif"},
+ {t:"Sach batao 😣",p:"Dil ki baat keh do 💕",g:"https://media.tenor.com/F0s3q0kQvSoAAAAC/cute-cry.gif"},
+ {t:"Last chance 😇",p:"Mera Valentine ban jao na 💖",g:"https://media.tenor.com/L2LHBjefpJIAAAAC/cute-plead.gif"}
 ];
 
 let i=0, scale=1;
 const yes=document.getElementById("yes");
 const no=document.getElementById("no");
+const title=document.getElementById("title");
+const text=document.getElementById("text");
+const gif=document.getElementById("gif");
 
 no.onclick=()=>{
  if(i<steps.length-1){
@@ -214,8 +189,18 @@ yes.onclick=()=>{
 
 function showFinal(){
  card.innerHTML=`
- <h1>I knew it! 😘</h1>
- <p>You mean everything to me ❤️</p>
+ <h1>Happy Valentine's Day ❤️</h1>
+
+ <p style="font-size:1.1rem">
+ Tum meri zindagi ka sabse khoobsurat hissa ho 💕<br><br>
+ Tumhari smile meri duniya roshan karti hai ✨<br><br>
+ Main hamesha tumhare saath rehna chahta hoon 💖<br><br>
+ Kya tum hamesha meri Valentine rahogi? 🌹
+ </p>
+
+ <p style="margin-top:10px">
+ Tum meri aadat nahi… meri zaroorat ho ❤️
+ </p>
 
  <div class="photos">
   <div class="photo-container" style="--rot:-2deg"><img src="1.jpeg"></div>
@@ -224,12 +209,13 @@ function showFinal(){
   <div class="photo-container" style="--rot:1deg"><img src="4.jpeg"></div>
  </div>
 
- <p style="margin-top:15px;font-size:0.8rem;opacity:0.8">Scroll down ❤️</p>
+ <p style="margin-top:15px;font-size:0.9rem;opacity:0.9">
+ Hamesha tumhara ❤️
+ </p>
  `;
- setInterval(()=>confetti({particleCount:3,spread:40,origin:{y:0.8}}),600);
+ setInterval(()=>confetti({particleCount:4,spread:50,origin:{y:0.8}}),500);
 }
 
-/* Floating Hearts Animation */
 const canvas=document.getElementById("hearts");
 const ctx=canvas.getContext("2d");
 
